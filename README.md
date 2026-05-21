@@ -1,4 +1,8 @@
 ##commit history 
+He optado por crear 2 branches en el repositorio, backend y frontend, subir i mergeas a partir de alli, cada stack del proyecto, al estar yo solo lo mergeo directamente al branch principal y no creo pequeños branches para cada funcion, por que no importa, pero esta aproximacion me permite crecer si alguien se uniese al proyecto por alguna razón.
+
+tambien la estructura de las apps, he decidido dejarlas simple como un solo archivo .py por cada capa,para tener mas legibilidad y menos capas en un proyecto simple, moverlo es un trabajo pequeño y facil si se quisiera escalar.
+
 -------------------------------------------------------------
 First commit:
 Asegurar la base tecnologica del proyecto, arquitectura monolitica modular. Monorepo
@@ -48,12 +52,30 @@ vamos a establecer los modelos para nuestro backend.
 vamos a separar responsabilidades por funcionalidades, podemos entender lo siguiente:
 un dispensador contiene bebida, y el dispensador tiene unos usos (metricas)
 por lo tanto obtenemos 3 modelos:
--Dispenser
--DispenserUsage
--Drink
+- Dispenser
+- DispenserUsage
+- Drink
+
 
 en produccion y con un volumen elevado de cervezas, o dispensadores, deberiamos colocar uuid como como pk, pero al tener un volumen un autoincremental es la mejor opcion.
 
 para los dispensadores creo una clase abstracta para evitar duplicaciones de campos hardcodeados, created_at  se repite, podemos obviar el updated_at, aun asi si quisieramos, con este cambio podemos escalar facilmente simplemente modificando esta clase que hemos creado.
 
 corroboro tambien que las migraciones con makemigrations i migrate funcionan correctamente y no rompen nada.
+-----
+
+Validacion de datos i serialización.
+
+vale en este caso, necesitamos validar los casos que usaremos:
+- ver/editar/crear/borrar una nueva bebida
+- registrar un nuevo dispensador
+- ver un dispensador
+- abrir dispensador
+- cerrar dispensador
+- metricas del dispensador
+- historial del dispensador
+
+el serializador de bebidas, es lo mas simple posible ya que no tiene datos complejos, por lo tanto podemos utilizar un serializador generico de django para poder conseguir validacion rapida y eficaz y en el proximo paso cuando creemos la logica de views, podremos utilizar mas genericos para el crud de manera sencilla.
+los dispensadores tienen mas complejidad al tener relacionales, por eso lo hemos separado en detalles, create/update, i la logica mecanica del grifo. de esta manera separamos responsabilidades con los efectos activos y mucho mas controlado, este punto puede irse rapidamente de madre si no se toma una decision, asi qeu aqui los genericos para los views tambien quedan en algunos puntos descartados!
+
+adicionalmente se han añadido las validaciones basicas para precio i flow para que nunca este en negativo
