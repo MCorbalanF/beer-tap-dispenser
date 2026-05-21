@@ -34,3 +34,8 @@ Consideraciones:
 React permiten una instalación con herramientas experimentales orientadas a la optimizacion de los estados de react, 
 he optado por no utilizar esta funcion experimental por una version mas estable de la misma. sin caracteristicas experimentales se mantiene cohesion, mantenibilidad y previsibilidad.
 -----
+
+
+Empezaremos por el backend:
+primero hay que establecer una base para todo lo que vendremos a hacer, instalar el corsheader para que react no tenga problemas al hacer fetch con nosotros, seguidamente, tenemos que acabar de configurar todas las apps y aplicar nombres y buenas practicas en los settings de django.
+crear y asegurar que django rest framework funciona con el endpoint health, asegurandome que el flow del framework es correcto y para futuras consultas, y un endpoint de aservicio para controlar el versionado de la api en la que se esta trabajando.
