@@ -2,7 +2,6 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-
 from apps.accounts.permissions import IsMockAdmin
 
 from apps.dispensers.models import (
@@ -25,24 +24,16 @@ class DispenserListView(generics.ListAPIView):
     queryset = Dispenser.objects.all()
     serializer_class = DispenserDetailSerializer
 
-
 class DispenserDetailView(generics.RetrieveAPIView):
     queryset = Dispenser.objects.all()
     serializer_class = DispenserDetailSerializer
     
 
-
 class DispenserToggleView(APIView):
     def post(self, request, pk):
 
-        dispenser = get_object_or_404(
-            Dispenser,
-            pk=pk
-        )
-
-        status_result, usage = (
-            DispenserService.toggle_dispenser(dispenser)
-        )
+        dispenser = get_object_or_404( Dispenser, pk=pk )
+        status_result, usage = DispenserService.toggle_dispenser(dispenser) 
 
         return Response({
             "status": status_result,
@@ -54,9 +45,7 @@ class DispenserToggleView(APIView):
 
 
 
-
 #views privados
-
 #creacion y actualizacion de dispensers, solo para admins
 class DispenserCreateUpdateView(generics.GenericAPIView):
 

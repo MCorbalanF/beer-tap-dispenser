@@ -117,7 +117,13 @@ añade cervezas y sus respectivo surtidor por cada cerveza
 
 no me acaba de gustar del todo como esta echa la logica del toggle pero debemos movernos al front para avanzar el proyecto
 el proximo paso para el backend sera realizar pruebas y crear los test correspondientes
+añadido .gitignore otra vez por que se habia eliminado por alguna razon que no entiendo
 ---------------------
 
+Consistencia de estado y concurrencia de datos del endpointt DispenserToggle:
+
+se ha colocado un timeout de 1s para evitar spam de abrir y cerar el grifo, se ha añadido una condicional para registrar si ha pasado ese tiempo, en caso de que no haya pasado el cooldown, simplemente devuelve el antiguo estado en que estaba para evitar cosas raras en el front.
+A la vez he estado pensando enla concurrencia de los datos, que ocurre si hay mas de un usuario clicando, elegi un unico endpoint para simplificar el flujo i complejidad entre front y back, pero con esto no lo creamos con idempotencia, pero para mvp es suficiente. lo cambiaria a 
+------------
 
 
