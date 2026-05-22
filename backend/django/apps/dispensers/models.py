@@ -22,7 +22,7 @@ class Dispenser(TimeStampedModel):
         blank=True
     )
     
-    flow_volume = models.FloatField(help_text="Flow volume in liters per second")
+    flow_volume = models.DecimalField(max_digits=5, decimal_places=2, default=0.5, null=True, blank=True, help_text="Flow volume in liters per second")
     is_open = models.BooleanField(default=False)
     
     def __str__(self):

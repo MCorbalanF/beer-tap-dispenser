@@ -79,3 +79,32 @@ el serializador de bebidas, es lo mas simple posible ya que no tiene datos compl
 los dispensadores tienen mas complejidad al tener relacionales, por eso lo hemos separado en detalles, create/update, i la logica mecanica del grifo. de esta manera separamos responsabilidades con los efectos activos y mucho mas controlado, este punto puede irse rapidamente de madre si no se toma una decision, asi qeu aqui los genericos para los views tambien quedan en algunos puntos descartados!
 
 adicionalmente se han añadido las validaciones basicas para precio i flow para que nunca este en negativo
+-----
+
+Views i logica dura:
+
+primero, antes de nada he cambiado el nombre de la app login, a un nombre mas adiente como es accounts, ya que esta app lo que hara es manejar el flow de authentificacion hardcodeada como pide el anunciado.
+Para ello, he echo un flujo con un servicio y un endpoint que recibe un email y password para devolver un token que deberia ser utilizado luego en los endpoints con proteccion para poder crear i editar las bebidas y dispensadores de la base de datos.
+de esta manera, tenemos preparado todo el tinglado por si queremos aplicarle un JWT a traves de django seria mucho mas sencillo, solo habria que cambiar 4 cosas por que las logicas estan ya preparadas y escalables para ese cambio.
+
+añadir todos los views de drinks es facil ya que al ser un modelo sencillo podemo utilizar genericos de django para el crud sin mucha dificultad y bastante automatizado.
+
+adicionalmente añado otros servicios que hay que externalizar de los views, los surtidores necesitamos un crud de creacion y edicion para poder editar i crear los surtidores con sus cervezas.
+necesitamos los siguientes endpoints:
+-listado publico de surtidores
+-details de 1 surtidor
+-toggle de funcion del surtidor
+-creacion edicion del surtidor
+
+para el endpoint de la logica de surtidor he elegido hacerlo en un solo endpoint, debido a que la logica que hay detras es muy simple, simplemente se enciende o se paga, si se enciende hace X i si se apaga hace Y.
+eso simplifica muchisimo la logica, si tubieramos que tubiera mas acciones, deberiamos hacer un diccionario con todas las posibilidades que tenga el surtidor y crear una especie de state machine que ejecute esos estados y se mueva entre ellos.pero seria escalable con este mismo endpoint, simplemente habrai que ponerle una query que acepte.
+volviendo a la logica, hemos separado la logica cruda con funciones en el modelo para acelerar i simplificar el codigo en los views, de esta manera se separa toda la logica de negocio y es mucho mas mantenible.
+al mantener un solo endpoint mantenemos concurrencia tanto en el front como en el end i mantenemos la logica en un solo view para evitar errores. Ademas se ha envolcallat todo el servicio en un transaction.atomic para asegurar la tomicidad de los datos por si hay algun error, y ademas asegura que si hay mas de un usuario tirando bebida del tirador, se iran intercalando.
+se podria mejorar creando llaves de idempotentes para que si dos usuarios llegan a la vez a tirar del tirador, no se creen datos erroneos i asegurar la integridad de los datos del surtidor.
+
+he visto una inconsistencia con el modelo del dispensador, un float es demasiado impreciso y no necesitamos de tanta información, por lo tanto, lo he pasado a decimalfield para tener mas control, y que ocupe menos en base de datos, mas precision y mas estructurado!
+antes de hacer el commit he decidido mirarme bien la logica pra refactorizar algunos views. pero lo hare en el proximo commit.
+-------------
+
+
+

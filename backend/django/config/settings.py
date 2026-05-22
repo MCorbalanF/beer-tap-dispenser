@@ -54,7 +54,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'api',
     
-    'apps.login',
+    'apps.accounts',
     'apps.dispensers',    
     'apps.drinks',
     'apps.health',
