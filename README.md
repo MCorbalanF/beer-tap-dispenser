@@ -106,5 +106,18 @@ he visto una inconsistencia con el modelo del dispensador, un float es demasiado
 antes de hacer el commit he decidido mirarme bien la logica pra refactorizar algunos views. pero lo hare en el proximo commit.
 -------------
 
+logica refactorizacion
+
+la logica tenia algunos fallos, el modelo tenia algunos errores y se han modificado y probado.
+se ha pasado la logica mas dura al servicio y se ha echo mas escalable, de esta manera no tenemos magic strings en el view, toda la logica se externaliza y se hace mas escalable.
+igualmente haremos pruebas con el front para ver como se comporta.
+adicionalmente he incluido un comando para inicializar el proyecto con una base de cervezas y surtidores fija!
+python manage.py bootstrap
+añade cervezas y sus respectivo surtidor por cada cerveza
+
+no me acaba de gustar del todo como esta echa la logica del toggle pero debemos movernos al front para avanzar el proyecto
+el proximo paso para el backend sera realizar pruebas y crear los test correspondientes
+---------------------
+
 
 

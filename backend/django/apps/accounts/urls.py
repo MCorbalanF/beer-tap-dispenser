@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
 import os
-from . import views
+from .views import MockLoginView
 
 urlpatterns = [
-    path('login/', views.LoginView.as_view(), name='login'),
+    path('login/', MockLoginView.as_view(), name='login'),
 
 ]

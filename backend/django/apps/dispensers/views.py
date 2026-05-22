@@ -32,8 +32,6 @@ class DispenserDetailView(generics.RetrieveAPIView):
     
 
 
-
-
 class DispenserToggleView(APIView):
     def post(self, request, pk):
 
@@ -42,19 +40,15 @@ class DispenserToggleView(APIView):
             pk=pk
         )
 
-        result = (
-            DispenserService
-            .toggle_dispenser(dispenser)
+        status_result, usage = (
+            DispenserService.toggle_dispenser(dispenser)
         )
 
         return Response({
-            "status": result["status"],
+            "status": status_result,
             "usage": (
-                DispenserUsageSerializer(
-                    result["usage"]
-                ).data
-                if result["usage"]
-                else None
+                DispenserUsageSerializer(usage).data
+                if usage else None
             )
         })
 
@@ -64,16 +58,10 @@ class DispenserToggleView(APIView):
 #views privados
 
 #creacion y actualizacion de dispensers, solo para admins
-class DispenserCreateUpdateView(
-    generics.GenericAPIView
-):
+class DispenserCreateUpdateView(generics.GenericAPIView):
 
     queryset = Dispenser.objects.all()
-
-    serializer_class = (
-        DispenserCreateUpdateSerializer
-    )
-
+    serializer_class = DispenserCreateUpdateSerializer
     permission_classes = [IsMockAdmin]
 
 
@@ -84,7 +72,6 @@ class DispenserCreateUpdateView(
         )
 
         serializer.is_valid(raise_exception=True)
-
         dispenser = serializer.save()
 
         return Response(
@@ -104,7 +91,6 @@ class DispenserCreateUpdateView(
         )
 
         serializer.is_valid(raise_exception=True)
-
         dispenser = serializer.save()
 
         return Response(

@@ -1,0 +1,84 @@
+############################################
+# OS / IDE
+############################################
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+############################################
+# Python (Django backend)
+############################################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+*.sqlite3
+db.sqlite3
+
+# Virtualenv
+venv/
+env/
+.env/
+
+# Django
+*.log
+local_settings.py
+media/
+
+# Migrations cache (optional, solo si quieres limpiar duro)
+# */migrations/__pycache__/
+
+############################################
+# Node / React (frontend Vite)
+############################################
+node_modules/
+dist/
+build/
+out/
+
+# Vite
+.vite/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# env files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+############################################
+# Coverage / tests
+############################################
+coverage/
+htmlcov/
+.pytest_cache/
+.nyc_output/
+
+############################################
+# Docker (si lo usas en local)
+############################################
+*.pid
+*.seed
+*.pid.lock
+
+############################################
+# Misc
+############################################
+*.swp
+*.swo
+*~
+
+# Django compiled files
+**/__pycache__/
+**/*.py[cod]
+
+backend/**/migrations/*.py
+backend/**/migrations/*.pyc
