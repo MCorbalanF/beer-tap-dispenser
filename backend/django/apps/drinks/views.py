@@ -9,7 +9,7 @@ class DrinkListView(generics.ListCreateAPIView):
     serializer_class = DrinkSerializer
     permission_classes = []
     
-class DrinkDetailView(generics.CreateAPIView):
+class DrinkDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Drink.objects.all()
     serializer_class = DrinkSerializer
     permission_classes = [IsMockAdmin]

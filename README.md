@@ -134,3 +134,9 @@ Los test pasan, el ultimo paso de back es acabar de poner campos o valores en lo
 
 primer esbozo de la dockerizacion, hay que retocarlo cuando se conecte el frontend y tenga su docker entonces crearemos un docker-compose para poder tirar front y back a la vez y se puedan comunicar entre ellos, lo haremos asi para facilitar la conexion con localhost y poder desplegarlo en local todo, para produccion deberia cambiarse los fetchs y aislar completamente el front del back, 0 conexiones y hacerlas a traves de la url que tengamos en nuestro dns.
 s ha eliminado tambien 
+---
+
+Backend
+Error en el view de la api de Drinks
+
+No permitia editar ni borrar las bebidas, el problema es que habia puesto un generico de solo creacion, pero necesitavamos el crud compleot, lo cambie a RetrieveUpdateDestroyAPIView y se soluciono a la velocidad del rayo.
