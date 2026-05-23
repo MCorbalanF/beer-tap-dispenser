@@ -1,0 +1,76 @@
+.page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bgText {
+  position: absolute;
+  font-family: 'Bangers', cursive;
+  font-size: clamp(140px, 35vw, 400px);
+  letter-spacing: 0.02em;
+  color: rgba(245, 158, 11, 0.04);
+  user-select: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: fadeIn 0.4s ease;
+}
+
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--c-accent);
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: 'Bangers', cursive;
+  font-size: clamp(56px, 10vw, 96px);
+  letter-spacing: 0.04em;
+  color: var(--c-text);
+  line-height: 0.95;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--c-text-3);
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 8px;
+  background: var(--c-amber);
+  color: var(--c-bg);
+  text-decoration: none;
+  padding: 12px 28px;
+  border-radius: var(--r-md);
+  font-family: 'Bangers', cursive;
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.btn:hover {
+  background: var(--c-amber-light);
+  box-shadow: 0 0 28px rgba(245, 158, 11, 0.3);
+}
