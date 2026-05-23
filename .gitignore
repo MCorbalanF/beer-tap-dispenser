@@ -1,3 +1,5 @@
+#powered by ChatGPT
+
 ############################################
 # OS / IDE
 ############################################
@@ -28,7 +30,7 @@ local_settings.py
 media/
 
 # Migrations cache (optional, solo si quieres limpiar duro)
-# */migrations/__pycache__/
+*/migrations/__pycache__/
 
 ############################################
 # Node / React (frontend Vite)
@@ -75,10 +77,3 @@ htmlcov/
 *.swp
 *.swo
 *~
-
-# Django compiled files
-**/__pycache__/
-**/*.py[cod]
-
-backend/**/migrations/*.py
-backend/**/migrations/*.pyc
