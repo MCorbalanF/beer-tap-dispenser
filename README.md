@@ -1,3 +1,20 @@
+##Iniciar proyecto en docker:
+Produccion:
+iniciar docker desktop
+abrir powershell/cmd 
+asegurarse que tienes docker instalado: docker version
+ir a la carpeta del proyecto raiz, donde esta el docker-compose.yml
+
+docker compose up --build
+
+abrir dockerfile y abrir el proyecto en el puerto correspondienteo
+
+
+Development:
+añadir .env con sus variables necesarias en el back
+crear venv local, 
+
+
 ##commit history 
 He optado por crear 2 branches en el repositorio, backend y frontend, subir i mergeas a partir de alli, cada stack del proyecto, al estar yo solo lo mergeo directamente al branch principal y no creo pequeños branches para cada funcion, por que no importa, pero esta aproximacion me permite crecer si alguien se uniese al proyecto por alguna razón.
 
@@ -161,3 +178,14 @@ no se tocara ni se pensara en localizacion al ser un trabajo a tan baja escala, 
 
 hay un error en la api de patch solo! el administrador no deja editar una bebida ni tampoco eliminarla!
 por lo tanto ahora vamos a cambiar y arreglar el back
+---
+
+Main
+Dockerizacion
+
+acabar la dockerizacion del proyecto lo pongo en main por que afecta a los dos, pero se deberia crear un branch que se llamase devops o demas y despues mergearlo sobretodo en ambiente produccion
+
+Dockerizacion de la app:
+
+ha sido un dolor de cabeza el frontend, nunca habia trabajado con vite y tiene dependencias extrañas para tirar y no hay ningun tutorial para tirarlo desde Docker, pero ya esta:
+por que daba problemas? muy sencillo, intentaba asegurar las instalaciones de ataques instalando pnpm y tirandolo todo desde pnpm, el problema es que no hacia nada, he estado unas 4 1/2 horas intentandolo pero imposible, me supera, por lo tanto he optado al tener un scoope mucho mas pequeño i aislado en un docker, voy a usar npm i ya esta.
