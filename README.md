@@ -189,3 +189,9 @@ Dockerizacion de la app:
 
 ha sido un dolor de cabeza el frontend, nunca habia trabajado con vite y tiene dependencias extrañas para tirar y no hay ningun tutorial para tirarlo desde Docker, pero ya esta:
 por que daba problemas? muy sencillo, intentaba asegurar las instalaciones de ataques instalando pnpm y tirandolo todo desde pnpm, el problema es que no hacia nada, he estado unas 4 1/2 horas intentandolo pero imposible, me supera, por lo tanto he optado al tener un scoope mucho mas pequeño i aislado en un docker, voy a usar npm i ya esta.
+---
+
+
+Dockerignore
+
+añadi dockerignore por que copia la base de datos i migraciones que hay de 0 y no mantiene lo que hay en el docker, entonces hay que ignorar todo el contenido que se tenga en local por si se han echo pruebas o por is se han subido archivos sin querer!
