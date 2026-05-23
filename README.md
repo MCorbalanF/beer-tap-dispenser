@@ -39,14 +39,18 @@ velocidad, simplicidad de configuracion, compilacion rapida...
 Consideraciones:
 React permiten una instalación con herramientas experimentales orientadas a la optimizacion de los estados de react, 
 he optado por no utilizar esta funcion experimental por una version mas estable de la misma. sin caracteristicas experimentales se mantiene cohesion, mantenibilidad y previsibilidad.
------
+---
 
 
+
+
+Backend
 Empezaremos por el backend:
 primero hay que establecer una base para todo lo que vendremos a hacer, instalar el corsheader para que react no tenga problemas al hacer fetch con nosotros, seguidamente, tenemos que acabar de configurar todas las apps y aplicar nombres y buenas practicas en los settings de django.
 crear y asegurar que django rest framework funciona con el endpoint health, asegurandome que el flow del framework es correcto y para futuras consultas, y un endpoint de aservicio para controlar el versionado de la api en la que se esta trabajando.
-----
+---
 
+Backend
 Estructurar la base de datos:
 vamos a establecer los modelos para nuestro backend. 
 vamos a separar responsabilidades por funcionalidades, podemos entender lo siguiente:
@@ -62,8 +66,9 @@ en produccion y con un volumen elevado de cervezas, o dispensadores, deberiamos 
 para los dispensadores creo una clase abstracta para evitar duplicaciones de campos hardcodeados, created_at  se repite, podemos obviar el updated_at, aun asi si quisieramos, con este cambio podemos escalar facilmente simplemente modificando esta clase que hemos creado.
 
 corroboro tambien que las migraciones con makemigrations i migrate funcionan correctamente y no rompen nada.
------
+---
 
+Backend
 Validacion de datos i serialización.
 
 vale en este caso, necesitamos validar los casos que usaremos:
@@ -79,8 +84,9 @@ el serializador de bebidas, es lo mas simple posible ya que no tiene datos compl
 los dispensadores tienen mas complejidad al tener relacionales, por eso lo hemos separado en detalles, create/update, i la logica mecanica del grifo. de esta manera separamos responsabilidades con los efectos activos y mucho mas controlado, este punto puede irse rapidamente de madre si no se toma una decision, asi qeu aqui los genericos para los views tambien quedan en algunos puntos descartados!
 
 adicionalmente se han añadido las validaciones basicas para precio i flow para que nunca este en negativo
------
+---
 
+Backend
 Views i logica dura:
 
 primero, antes de nada he cambiado el nombre de la app login, a un nombre mas adiente como es accounts, ya que esta app lo que hara es manejar el flow de authentificacion hardcodeada como pide el anunciado.
@@ -104,8 +110,9 @@ se podria mejorar creando llaves de idempotentes para que si dos usuarios llegan
 
 he visto una inconsistencia con el modelo del dispensador, un float es demasiado impreciso y no necesitamos de tanta información, por lo tanto, lo he pasado a decimalfield para tener mas control, y que ocupe menos en base de datos, mas precision y mas estructurado!
 antes de hacer el commit he decidido mirarme bien la logica pra refactorizar algunos views. pero lo hare en el proximo commit.
--------------
+---
 
+Backend
 logica refactorizacion
 
 la logica tenia algunos fallos, el modelo tenia algunos errores y se han modificado y probado.
@@ -118,13 +125,15 @@ añade cervezas y sus respectivo surtidor por cada cerveza
 no me acaba de gustar del todo como esta echa la logica del toggle pero debemos movernos al front para avanzar el proyecto
 el proximo paso para el backend sera realizar pruebas y crear los test correspondientes
 añadido .gitignore otra vez por que se habia eliminado por alguna razon que no entiendo
----------------------
+---
 
+Backend
 Consistencia de estado y concurrencia de datos del endpointt DispenserToggle:
 
 se ha colocado un timeout de 1s para evitar spam de abrir y cerar el grifo, se ha añadido una condicional para registrar si ha pasado ese tiempo, en caso de que no haya pasado el cooldown, simplemente devuelve el antiguo estado en que estaba para evitar cosas raras en el front.
 A la vez he estado pensando enla concurrencia de los datos, que ocurre si hay mas de un usuario clicando, elegi un unico endpoint para simplificar el flujo i complejidad entre front y back, pero con esto no lo creamos con idempotencia, pero para mvp es suficiente. lo cambiaria a 
-------------
+---
+
 
 Backend Testing:
 
@@ -134,3 +143,11 @@ Los test pasan, el ultimo paso de back es acabar de poner campos o valores en lo
 
 primer esbozo de la dockerizacion, hay que retocarlo cuando se conecte el frontend y tenga su docker entonces crearemos un docker-compose para poder tirar front y back a la vez y se puedan comunicar entre ellos, lo haremos asi para facilitar la conexion con localhost y poder desplegarlo en local todo, para produccion deberia cambiarse los fetchs y aislar completamente el front del back, 0 conexiones y hacerlas a traves de la url que tengamos en nuestro dns.
 s ha eliminado tambien 
+---
+
+Frontend
+First commit
+
+se le ha pedido a claude code, que realize las tareas basicas para crear un front end como base, estas practicas ha sido, tener un statemachine para el auth, especificarle el auth y como funciona y aun asi ha fallado como una escopeta de feria, asi que iremos limpiando detras del desastre que ha creado. De esta manera, nos ha echo la logica dura que podria durar casi 5 dias en hacer a mano, y hay que simplemente hay que crear de 0, hay cosas que se deberia ver poner a futuro, la logica esta en puro css cargado, se podria hacer con un framework de css como bootstrap y cambiarlo para tener estilos mas fijos y no tanta variabilidad y escalable podria ser mucho mas escalable  nivel codigo, revisar cada css para cada pagina puede ser un dolo, pero al ser un proyecto pequeño que no crecera mucho mas, en fin asi se queda.
+hay errores visuales, inconsistencias varias con las fuentes y otros requisitos que iremos puliendo a traves de los siguientes commits
+---

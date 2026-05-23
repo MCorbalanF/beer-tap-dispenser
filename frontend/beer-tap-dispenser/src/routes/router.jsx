@@ -1,39 +1,38 @@
-import {
-  createBrowserRouter,
-} from "react-router-dom"
-import MainLayout from "../layouts/MainLayout"
+import { createBrowserRouter, Navigate } from 'react-router-dom'
+import MainLayout from '../layouts/MainLayout'
+import ProtectedRoute from './ProtectedRoute'
 
-import LandingPage from "../pages/landing/landing"
-import AdminPage from "../pages/admin/admin"
-import DispenserPage from "../pages/dispenser/dispenser"
-import NotFoundPage from "../pages/not-found/not-found"
+import DispensersList from '../pages/dispensers/DispensersList'
+import DispenserPage  from '../pages/dispenser/Dispenser'
+import LoginPage      from '../pages/login/Login'
+import AdminPage      from '../pages/admin/Admin'
+import NotFoundPage   from '../pages/not-found/not-found'
 
-
-
-
- const router = createBrowserRouter([
+const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <MainLayout />,
     children: [
+      // Redirect root → dispensers list
+      { index: true, element: <Navigate to="/dispensers" replace /> },
+
+      // Public
+      { path: 'dispensers',     element: <DispensersList /> },
+      { path: 'dispensers/:id', element: <DispenserPage /> },
+      { path: 'login',          element: <LoginPage /> },
+
+      // Admin (protected)
       {
-        index: true,
-        element: <LandingPage />
+        path: 'admin',
+        element: (
+          <ProtectedRoute>
+            <AdminPage />
+          </ProtectedRoute>
+        ),
       },
-      {
-        path: "admin",
-        element: <AdminPage />
-      },
-      {
-        path: "dispenser",
-        element: <DispenserPage />
-      }
-    ]
+    ],
   },
-  {
-    path: "*",
-    element: <NotFoundPage />
-  }
+  { path: '*', element: <NotFoundPage /> },
 ])
 
 export default router
