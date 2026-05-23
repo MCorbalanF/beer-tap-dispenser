@@ -33,12 +33,13 @@
 
 .heroTitle {
   font-family: 'Bangers', cursive;
-  font-size: clamp(64px, 10vw, 120px);
+  font-size: clamp(60px, 8vw, 120px);
   letter-spacing: 0.04em;
-  line-height: 0.9;
+  line-height: 1;
   color: var(--c-text);
-  text-shadow: 0 0 80px rgba(245,158,11,0.15);
+  text-shadow: 0 0 120px rgba(245,158,11,0.15);
   margin-bottom: 24px;
+  text-align: center;
 }
 
 .heroMeta {
@@ -318,7 +319,8 @@
 /* Card name */
 .cardName {
   font-family: 'Bangers', cursive;
-  font-size: 26px;
+  font-size: 22px;
+  text-transform: capitalize;
   letter-spacing: 0.05em;
   color: var(--c-text);
   line-height: 1;
@@ -334,6 +336,8 @@
 
 .drinkName {
   font-size: 13px;
+    text-transform: capitalize;
+
   color: var(--c-text-2);
   white-space: nowrap;
   overflow: hidden;
@@ -387,15 +391,20 @@
 }
 
 /* ── Festival strip ── */
+.footer{
+  margin-top: auto;
+  background:fixed var(--c-bg-3);
+  border-top: 1px solid rgba(245, 158, 11, 0.10);
+  display: flex;
+}
 .festivalStrip {
   background: var(--c-bg-3);
   border-top: 1px solid rgba(245, 158, 11, 0.10);
   display: flex;
   gap: 32px;
   padding: 10px 0;
-  overflow: hidden;
   white-space: nowrap;
-  animation: marquee 20s linear infinite;
+  animation: marquee 25s linear infinite;
 }
 
 .festivalStrip span {

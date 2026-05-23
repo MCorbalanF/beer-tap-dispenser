@@ -1,119 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { dispensersApi } from '../../api/api'
 import s from './Dispenser.module.css'
+import BeerGlass from '../../components/dispensers/details/beer_glass'
+import LivePrice from '../../components/dispensers/details/live_price'
 
-// ── Animated Beer Glass ──────────────────────────────────────────────────────
-
-function BeerGlass({ isOpen, fillLevel = 0 }) {
-  return (
-    <svg
-      viewBox="0 0 120 180"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`${s.glass} ${isOpen ? s.glassFilling : ''}`}
-      aria-hidden="true"
-    >
-      {/* Glass outline */}
-      <path
-        d="M20 20 L10 170 L110 170 L100 20 Z"
-        stroke="rgba(245,158,11,0.4)"
-        strokeWidth="3"
-        fill="rgba(255,255,255,0.02)"
-      />
-
-      {/* Beer fill (dynamic height) */}
-      <clipPath id="glassClip">
-        <path d="M20 20 L10 170 L110 170 L100 20 Z" />
-      </clipPath>
-      <g clipPath="url(#glassClip)">
-        <rect
-          x="0"
-          y={170 - fillLevel * 150}
-          width="120"
-          height={fillLevel * 150}
-          fill="url(#beerGradient)"
-          style={{ transition: 'y 0.3s ease, height 0.3s ease' }}
-        />
-        {/* Foam */}
-        {fillLevel > 0.1 && (
-          <ellipse
-            cx="60"
-            cy={170 - fillLevel * 150}
-            rx="48"
-            ry="10"
-            fill="rgba(255,255,255,0.85)"
-          />
-        )}
-        {/* Bubbles */}
-        {isOpen && (
-          <>
-            <circle cx="40" cy={150} r="2.5" fill="rgba(255,255,255,0.3)" className={s.bubble} style={{ '--delay': '0s' }} />
-            <circle cx="60" cy={130} r="2" fill="rgba(255,255,255,0.25)" className={s.bubble} style={{ '--delay': '0.4s' }} />
-            <circle cx="75" cy={145} r="3" fill="rgba(255,255,255,0.2)" className={s.bubble} style={{ '--delay': '0.8s' }} />
-            <circle cx="50" cy={115} r="1.5" fill="rgba(255,255,255,0.2)" className={s.bubble} style={{ '--delay': '1.2s' }} />
-          </>
-        )}
-      </g>
-
-      {/* Stream from top when open */}
-      {isOpen && (
-        <rect
-          x="55"
-          y="0"
-          width="10"
-          height="25"
-          rx="5"
-          fill="#fbbf24"
-          opacity="0.7"
-          className={s.stream}
-        />
-      )}
-
-      {/* Gradients */}
-      <defs>
-        <linearGradient id="beerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#d97706" />
-          <stop offset="50%" stopColor="#f59e0b" />
-          <stop offset="100%" stopColor="#fbbf24" />
-        </linearGradient>
-      </defs>
-    </svg>
-  )
-}
-
-// ── Price Counter ─────────────────────────────────────────────────────────────
-
-function LivePrice({ isOpen, openedAt, pricePerLiter, flowVolume, closedPrice }) {
-  const [price, setPrice] = useState(closedPrice || 0)
-  const rafRef = useRef(null)
-
-  useEffect(() => {
-    if (!isOpen || !openedAt || !pricePerLiter || !flowVolume) {
-      if (closedPrice !== undefined) setPrice(closedPrice)
-      return
-    }
-
-    function tick() {
-      const elapsed = (Date.now() - new Date(openedAt).getTime()) / 1000
-      const liters = elapsed * parseFloat(flowVolume)
-      setPrice(liters * parseFloat(pricePerLiter))
-      rafRef.current = requestAnimationFrame(tick)
-    }
-
-    rafRef.current = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafRef.current)
-  }, [isOpen, openedAt, pricePerLiter, flowVolume, closedPrice])
-
-  return (
-    <div className={`${s.priceDisplay} ${isOpen ? s.priceActive : ''}`}>
-      <span className={s.priceCurrency}>€</span>
-      <span className={s.priceValue}>{price.toFixed(2)}</span>
-    </div>
-  )
-}
-
-// ── Main Page ─────────────────────────────────────────────────────────────────
 
 export default function DispenserPage() {
   const { id } = useParams()
@@ -148,21 +39,21 @@ export default function DispenserPage() {
   // Animate fill level while open
   useEffect(() => {
     if (!dispenser?.is_open) {
-      setFillLevel(0)
+      setFillLevel(0);
       return
-    }
-    setFillLevel(0.05)
+    };
+    setFillLevel(0.05);
     fillRef.current = setInterval(() => {
       setFillLevel(prev => Math.min(prev + 0.005, 0.95))
-    }, 200)
-    return () => clearInterval(fillRef.current)
-  }, [dispenser?.is_open])
+    }, 200);
+    return () => clearInterval(fillRef.current);
+  }, [dispenser?.is_open]);
 
   async function handleToggle() {
     if (toggling || !dispenser) return
-    setToggling(true)
+    setToggling(true);
     try {
-      const result = await dispensersApi.toggle(id)
+      const result = await dispensersApi.toggle(id);
 
       if (result.status === 'closed' && result.usage) {
         setLastUsage(result.usage)
@@ -170,18 +61,20 @@ export default function DispenserPage() {
         setShowClosed(true)
         setTimeout(() => setShowClosed(false), 4000)
       } else {
-        setLastUsage(null)
-        setClosedPrice(null)
-        setShowClosed(false)
-      }
+        setLastUsage(null);
+        setClosedPrice(null);
+        setShowClosed(false);
+      };
 
-      await fetchDispenser()
+      await fetchDispenser();
+
     } catch (err) {
-      setError(err.message)
+      setError(err.message);
     } finally {
-      setToggling(false)
-    }
-  }
+      setToggling(false);
+    };
+
+  };
 
   // ── Derived data (safe defaults for future backend fields)
   // TODO: expand with more fields from backend as they become available

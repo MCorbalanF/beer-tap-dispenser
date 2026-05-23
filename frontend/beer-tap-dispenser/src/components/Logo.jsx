@@ -1,4 +1,4 @@
-export default function Logo({ size = 40, showText = true }) {
+export default function Logo({ size = 80, showText = true }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', userSelect: 'none' }}>
       {/* Beer tap icon */}
@@ -36,11 +36,11 @@ export default function Logo({ size = 40, showText = true }) {
       </svg>
 
       {showText && (
-        <div style={{ lineHeight: 1 }}>
+        <div style={{ lineHeight: 1, gap: '6px', display: 'flex', flexDirection: 'column' }}>
           <span
             style={{
               fontFamily: "'Bangers', cursive",
-              fontSize: size * 0.7,
+              fontSize: size * 0.8,
               letterSpacing: '0.06em',
               color: '#f59e0b',
               display: 'block',
@@ -51,7 +51,7 @@ export default function Logo({ size = 40, showText = true }) {
           <span
             style={{
               fontFamily: "'Outfit', sans-serif",
-              fontSize: size * 0.22,
+              fontSize: size * 0.18,
               letterSpacing: '0.18em',
               color: '#6b6248',
               textTransform: 'uppercase',
@@ -59,7 +59,7 @@ export default function Logo({ size = 40, showText = true }) {
               marginTop: '-2px',
             }}
           >
-            BEER FESTIVAL
+          Beer Tap Dispenser  
           </span>
         </div>
       )}

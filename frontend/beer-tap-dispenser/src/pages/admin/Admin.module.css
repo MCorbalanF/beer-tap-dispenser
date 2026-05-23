@@ -310,6 +310,7 @@
 .listItemName {
   font-size: 14px;
   font-weight: 600;
+  text-transform: capitalize;
   color: var(--c-text);
   white-space: nowrap;
   overflow: hidden;
@@ -318,6 +319,8 @@
 
 .listItemDesc {
   font-size: 12px;
+  text-transform: capitalize;
+
   color: var(--c-text-3);
   font-family: 'DM Mono', monospace;
 }

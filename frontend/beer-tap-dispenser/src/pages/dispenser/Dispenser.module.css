@@ -200,7 +200,9 @@
 
 .dispenserName {
   font-family: 'Bangers', cursive;
-  font-size: 64px;
+  font-size: 58px;
+  text-transform: capitalize;
+
   letter-spacing: 0.04em;
   color: var(--c-text);
   line-height: 1;
@@ -209,6 +211,8 @@
 
 .drinkLabel {
   font-size: 16px;
+  text-transform: capitalize;
+
   color: var(--c-amber);
   font-weight: 500;
 }

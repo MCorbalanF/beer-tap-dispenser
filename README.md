@@ -151,3 +151,13 @@ First commit
 se le ha pedido a claude code, que realize las tareas basicas para crear un front end como base, estas practicas ha sido, tener un statemachine para el auth, especificarle el auth y como funciona y aun asi ha fallado como una escopeta de feria, asi que iremos limpiando detras del desastre que ha creado. De esta manera, nos ha echo la logica dura que podria durar casi 5 dias en hacer a mano, y hay que simplemente hay que crear de 0, hay cosas que se deberia ver poner a futuro, la logica esta en puro css cargado, se podria hacer con un framework de css como bootstrap y cambiarlo para tener estilos mas fijos y no tanta variabilidad y escalable podria ser mucho mas escalable  nivel codigo, revisar cada css para cada pagina puede ser un dolo, pero al ser un proyecto pequeño que no crecera mucho mas, en fin asi se queda.
 hay errores visuales, inconsistencias varias con las fuentes y otros requisitos que iremos puliendo a traves de los siguientes commits
 ---
+Frontend
+Desacoplar componentes y logica de paginas:
+
+se han desacoplado los componenes que estaban en las paginas para tener descentralizado toda la logica, tener escalabilidad a nivel front y facilidad de lectura.
+se ha arreglado el beer_glass ya que estaba invertido, con cambiar el path y el trazado de svg ha sido suficiente.
+no se tocara ni se pensara en localizacion al ser un trabajo a tan baja escala, pero ahora seria el momento de plantearlo ya que hay pocas palabras hardcodeadas aun.
+
+
+hay un error en la api de patch solo! el administrador no deja editar una bebida ni tampoco eliminarla!
+por lo tanto ahora vamos a cambiar y arreglar el back
