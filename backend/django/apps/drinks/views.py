@@ -4,12 +4,12 @@ from .serializers import DrinkSerializer
 from apps.accounts.permissions import IsMockAdmin
 
 
-class DrinkListView(generics.ListAPIView):
+class DrinkListView(generics.ListCreateAPIView):
     queryset = Drink.objects.all()
     serializer_class = DrinkSerializer
     permission_classes = []
     
-class DrinkDetailView(generics.RetrieveUpdateDestroyAPIView):
+class DrinkDetailView(generics.CreateAPIView):
     queryset = Drink.objects.all()
     serializer_class = DrinkSerializer
     permission_classes = [IsMockAdmin]

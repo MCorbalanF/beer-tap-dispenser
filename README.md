@@ -126,4 +126,11 @@ se ha colocado un timeout de 1s para evitar spam de abrir y cerar el grifo, se h
 A la vez he estado pensando enla concurrencia de los datos, que ocurre si hay mas de un usuario clicando, elegi un unico endpoint para simplificar el flujo i complejidad entre front y back, pero con esto no lo creamos con idempotencia, pero para mvp es suficiente. lo cambiaria a 
 ------------
 
+Backend Testing:
 
+he creado varios test para comprobar que el funcionamiento y de los endpoints basicos funcionan, me he ayudado de ia por que es uno de mis puntos flojos, pero me ha permitido ver que habia varios campos que no estaban adecuadamente tipados como float en vez de decimal mas, esta vez en los dispensadores, por lo que hacia romper los tests. tambien otros cambios semanticos que son mas correctos. 
+He decidido cambiar estos campos a tipados mejores para asegurar un mejor tipado, aun que haya costado mas hacer algunos calculos con diferentes tipados, es mas escalable y evitamos que los datos puedan confundirse, poudiendo escalar a largo plazo si queremos hacer algun cambio.
+Los test pasan, el ultimo paso de back es acabar de poner campos o valores en los modelos y serializer donde lo necesitemos para ampliar la experiencia de usuario en el front.
+
+primer esbozo de la dockerizacion, hay que retocarlo cuando se conecte el frontend y tenga su docker entonces crearemos un docker-compose para poder tirar front y back a la vez y se puedan comunicar entre ellos, lo haremos asi para facilitar la conexion con localhost y poder desplegarlo en local todo, para produccion deberia cambiarse los fetchs y aislar completamente el front del back, 0 conexiones y hacerlas a traves de la url que tengamos en nuestro dns.
+s ha eliminado tambien 

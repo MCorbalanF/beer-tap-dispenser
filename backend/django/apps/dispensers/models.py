@@ -34,8 +34,8 @@ class DispenserUsage(TimeStampedModel):
     
     opened_at = models.DateTimeField()
     closed_at = models.DateTimeField(null=True, blank=True)
-    duration_seconds = models.FloatField(null=True, blank=True)  # Duration in seconds
-    liters_served = models.FloatField(null=True, blank=True)  # Liters served
+    duration_seconds = models.DurationField(null=True, blank=True)  # Duration in seconds
+    liters_served = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Liters served
     total_price = models.DecimalField(max_digits=8, decimal_places=2, default=0, null=True, blank=True)
     
     def __str__(self):
@@ -45,24 +45,23 @@ class DispenserUsage(TimeStampedModel):
     @property
     def is_active(self):
         return self.closed_at is None
-    
+        
     def close_usage(self):
 
         self.closed_at = timezone.now()
 
-        duration = (
-            self.closed_at - self.opened_at
-        ).total_seconds()
+        duration = self.closed_at - self.opened_at  # timedelta
 
-        self.duration_seconds = duration
+        self.duration_seconds = duration  # DurationField OK
 
-        self.liters_served = (
-            duration * self.dispenser.flow_volume
-        )
+        duration_seconds = Decimal(str(duration.total_seconds()))
 
-        self.total_price = Decimal(
-            self.liters_served *
-            float(self.dispenser.drink.price_per_liter)
-        )
+        flow = self.dispenser.flow_volume or Decimal("0")
+
+        self.liters_served = duration_seconds * flow
+
+        price = self.dispenser.drink.price_per_liter or Decimal("0")
+
+        self.total_price = self.liters_served * price
 
         self.save()

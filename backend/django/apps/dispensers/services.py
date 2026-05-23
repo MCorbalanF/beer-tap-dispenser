@@ -2,7 +2,6 @@
 
 from django.db import transaction
 from django.utils import timezone
-from django.utils import timezone
 from apps.dispensers.models import Dispenser, DispenserUsage
 
 
@@ -28,18 +27,13 @@ class DispenserService:
         if last_usage:
             reference_time = (
                 last_usage.closed_at
-                or last_usage.opened_at
+                if last_usage.closed_at
+                else last_usage.opened_at
             )
-
             delta = timezone.now() - reference_time
-            if delta.total_seconds() < 1:
-
-                current_status = (
-                    "opened"
-                    if dispenser.is_open
-                    else "closed"
-                )
-
+            
+            if delta.total_seconds() <= 1:
+                current_status = "opened" if dispenser.is_open else "closed"                
                 return current_status, last_usage
         
         # =========================
