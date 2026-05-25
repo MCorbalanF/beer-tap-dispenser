@@ -4,7 +4,7 @@ import { dispensersApi } from '../../api/api'
 import s from './Dispenser.module.css'
 import BeerGlass from '../../components/dispensers/details/beer_glass'
 import LivePrice from '../../components/dispensers/details/live_price'
-
+import UsageHistory from '../../components/dispensers/details/usage_history'
 
 export default function DispenserPage() {
   const { id } = useParams()
@@ -18,7 +18,7 @@ export default function DispenserPage() {
   const [showClosed, setShowClosed] = useState(false)
   const [closedPrice, setClosedPrice] = useState(null)
   const fillRef = useRef(null)
-
+  const [showMoreMetrics, setShowMoreMetrics] = useState(false)
   const fetchDispenser = useCallback(() => {
     return dispensersApi.get(id)
       .then(data => {
@@ -59,7 +59,7 @@ export default function DispenserPage() {
         setLastUsage(result.usage)
         setClosedPrice(result.usage.total_price ? parseFloat(result.usage.total_price) : 0)
         setShowClosed(true)
-        setTimeout(() => setShowClosed(false), 4000)
+        setTimeout(() => setShowClosed(false), 100000)
       } else {
         setLastUsage(null);
         setClosedPrice(null);
@@ -82,9 +82,14 @@ export default function DispenserPage() {
   const isOpen = dispenser?.is_open || false
   const flowVolume = dispenser?.flow_volume || 0.5
   const openedAt = dispenser?.current_usage_opened_at || null  // ready for future backend field
-  const totalUsages = dispenser?.total_usages || null           // ready for future backend field
-  const totalLiters = dispenser?.total_liters || null           // ready for future backend field
-  const totalRevenue = dispenser?.total_revenue || null           // ready for future backend field
+  const totalUsages = dispenser?.metrics.total_sessions || null           // ready for future backend field
+  const totalLiters = dispenser?.metrics.total_liters || null           // ready for future backend field
+  const totalRevenue = dispenser?.metrics.total_revenue || null           // ready for future backend field
+  const averageLitersPerSessions = dispenser?.metrics.average_liters_per_session || null           // ready for future backend field
+  const averageRevenuePerSessions = dispenser?.metrics.average_revenue_per_session || null           // ready for future backend field
+  const longestSession = dispenser?.metrics.longest_session || null           // ready for future backend field
+  const shortestSession = dispenser?.metrics.shortest_session || null           // ready for future backend field
+  const averagePricePerLiter = dispenser?.metrics.average_price_per_liter || null           // ready for future backend field
 
   if (loading) {
     return (
@@ -162,6 +167,12 @@ export default function DispenserPage() {
             {drink && <p className={s.drinkLabel}>{drink.name}</p>}
           </div>
 
+          {/* Status note */}
+          <p className={s.statusNote}>
+            Status: <strong className={isOpen ? s.textOpen : s.textClosed}>
+              {isOpen ? 'Open — currently serving' : 'Closed — ready to serve'}
+            </strong>
+          </p>
           {/* Live price counter */}
           <div className={s.priceBlock}>
             <p className={s.priceLabel}>
@@ -198,7 +209,7 @@ export default function DispenserPage() {
                 </div>
                 <div className={s.closedStat}>
                   <span className={s.closedStatValue}>
-                    €{parseFloat(lastUsage.total_price || 0)}
+                    {parseFloat(lastUsage.total_price || 0)}€
                   </span>
                   <span className={s.closedStatLabel}>Total</span>
                 </div>
@@ -209,7 +220,7 @@ export default function DispenserPage() {
           {/* Info grid */}
           <div className={s.infoGrid}>
             <InfoRow label="Drink" value={drink?.name || '—'} />
-            <InfoRow label="Price / liter" value={drink ? `€${drink.price_per_liter}` : '—'} />
+            <InfoRow label="Price / liter" value={drink ? `${drink.price_per_liter}€` : '—'} />
             <InfoRow label="Flow rate" value={`${flowVolume} L/s`} />
             {drink?.description && (
               <InfoRow label="Description" value={drink.description} />
@@ -229,22 +240,52 @@ export default function DispenserPage() {
             />
             <InfoRow
               label="Total revenue"
-              value={totalRevenue != null ? `€${parseFloat(totalRevenue).toFixed(2)}` : '—'}
+              value={totalRevenue != null ? `${parseFloat(totalRevenue).toFixed(2)}€` : '—'}
               muted={totalRevenue == null}
             />
-          </div>
+            {showMoreMetrics && <>
+              <InfoRow
+                label="Average Liters per session"
+                value={averageLitersPerSessions != null ? `${parseFloat(averageLitersPerSessions).toFixed(1)}L` : '—'}
+                muted={averageLitersPerSessions == null}
+              />
+              <InfoRow
+                label="Average Revenue per session"
+                value={averageRevenuePerSessions != null ? `${parseFloat(averageRevenuePerSessions).toFixed(2)}€` : '—'}
+                muted={averageRevenuePerSessions == null}
+              />
 
-          {/* Status note */}
-          <p className={s.statusNote}>
-            Status: <strong className={isOpen ? s.textOpen : s.textClosed}>
-              {isOpen ? 'Open — currently serving' : 'Closed — ready to serve'}
-            </strong>
-          </p>
+              <InfoRow
+                label="Longest session"
+                value={longestSession != null ? `${parseFloat(longestSession).toFixed(1)}s` : '—'}
+                muted={longestSession == null}
+              />
+              <InfoRow
+                label="Shortest session"
+                value={shortestSession != null ? `${parseFloat(shortestSession).toFixed(1)}s` : '—'}
+                muted={shortestSession == null}
+              />
+              <InfoRow
+                label="Average price per liter"
+                value={averagePricePerLiter != null ? `${parseFloat(averagePricePerLiter).toFixed(2)}€` : '—'}
+                muted={averagePricePerLiter == null}
+              />
+            </> 
+            }
+
+          </div>
+                      <div className={s.showMoreWrapper}>
+              <button className={s.showMoreBtn} onClick={() => setShowMoreMetrics(!showMoreMetrics)}>
+               {!showMoreMetrics ? 'Showing all metrics' : 'Hide metrics'}
+              </button>
+            </div>
+          <UsageHistory usages={dispenser?.usages || []} />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
 
 function InfoRow({ label, value, muted = false }) {
   return (

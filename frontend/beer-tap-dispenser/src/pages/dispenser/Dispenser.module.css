@@ -345,6 +345,7 @@
 
 .infoValue {
   font-family: 'DM Mono', monospace;
+  text-transform: capitalize;
   font-size: 13px;
   color: var(--c-text-2);
   text-align: right;
@@ -411,3 +412,18 @@
 }
 
 .retryBtn:hover { background: rgba(248,113,113,0.08); }
+
+.showMoreBtn {
+  background: none;
+  border: 1px solid rgba(245,158,11,0.3);
+  color: var(--c-amber);
+  padding: 6px 18px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.showMoreBtn:hover { background: rgba(245,158,11,0.08); }

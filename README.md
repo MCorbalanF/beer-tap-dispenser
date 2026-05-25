@@ -1,21 +1,45 @@
 ##Iniciar proyecto en docker:
+
 Produccion:
 iniciar docker desktop
 abrir powershell/cmd 
 asegurarse que tienes docker instalado: docker version
 ir a la carpeta del proyecto raiz, donde esta el docker-compose.yml
 
+docker compose  build --no-cache
 docker compose up --build
 
-abrir dockerfile y abrir el proyecto en el puerto correspondienteo
+admin credentials:
+admin@festival.com 
+admin123
+
+abrir dockerfile y abrir el proyecto en el puerto correspondiente
 
 
 Development:
-añadir .env con sus variables necesarias en el back
-crear venv local, 
+crear venv local con las variables siguientes:
 
+.env con sus variables necesarias en el back
+Backend:
+SECRET_KEY
+DEBUG
+CORS_ALLOW_ALL_ORIGINS
 
-##commit history 
+Frontend:
+VITE_API_URL
+
+iniciar server development comandos:
+backend:
+venv\scripts\activate
+python manage.py makemigrations
+python manage.py migrate
+python manage.py bootstrap
+python manage.py runserver
+
+frontend:
+npm vite
+
+commit history 
 He optado por crear 2 branches en el repositorio, backend y frontend, subir i mergeas a partir de alli, cada stack del proyecto, al estar yo solo lo mergeo directamente al branch principal y no creo pequeños branches para cada funcion, por que no importa, pero esta aproximacion me permite crecer si alguien se uniese al proyecto por alguna razón.
 
 tambien la estructura de las apps, he decidido dejarlas simple como un solo archivo .py por cada capa,para tener mas legibilidad y menos capas en un proyecto simple, moverlo es un trabajo pequeño y facil si se quisiera escalar.
@@ -173,3 +197,10 @@ Backend pequeños ajustes:
 se ha añadido un serializador para los views de listado, no necesitamos tanta informacion como con detail, optimizamos las peticiones cuando haya varias, a futuro puede ser beneficioso.
 tambien añadimos metricas y historial de usos en los detalles de dispensador, de todo tipo, los colocamos en el modelo para optimizar, y si queremos reutilizar sera muchisimo mas sencillo, los serializadores deberian ser sencillos
 edicion del comando bootstrap para iniciar el servicio, ahora los flows de las bebidas son mas bajos, un flow de medio litro cada segundo no es natural.
+----
+
+Ajustes finales de frontend
+
+Añadimos y perfilamos los datos que hemos creado del backend, metricas, separamos la logica en la carpeta componentes y un css personalizado ya que es muy grande,
+añadimos un boton para mostrar las metricas avanzadas que hemos colocado.
+podriamos colocar todo esto tipado para que solo el admin pueda ver las metricas y historial, tanto a back como por end, pero por razones de simplicidad, lo he reducido a este uso, ya que asi se puede ver siempre el mismo endpoint pero por timeconstrainments y demas, he decidido no realiar esto, a futuro podria crearle facilmente, solamente añadiendo el authcontext y escondiendo los datos si esta el admin registrado, y por parte del backend se puede ocultar estos campos si no estan y ya esta. no hay que modificar mucha cosa, asi que es sencillo y escalable a futuro.
