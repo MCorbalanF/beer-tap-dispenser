@@ -16,7 +16,7 @@ Stack tecnológico:
 - Docker  
 
 ---
-> :warning: **⚠️ Aviso ⚠️**: Esta version del readme esta mejorada con IA, para ver los mensajes originales y una explicacion mas humana ver el commit anterior. Gracias.
+> :warning: **⚠️ Aviso ⚠️**: Esta version del readme esta mejorada con IA, para ver los mensajes originales y una explicacion mas humana ver commits anteriores. Gracias.
 ---
 
 
