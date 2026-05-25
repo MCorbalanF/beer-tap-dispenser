@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# Django
+db.sqlite3
+*.sqlite3
+media/
+staticfiles/
+
+# Migrations
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# Environment variables
+.env
+.env.*
+
+# IDEs
+.vscode/
+.idea/
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tests / cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node (si tienes frontend mezclado)
+node_modules/
+dist/
+
+# Logs
+*.log
