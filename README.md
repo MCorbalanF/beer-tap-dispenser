@@ -162,6 +162,10 @@ primer esbozo de la dockerizacion, hay que retocarlo cuando se conecte el fronte
 s ha eliminado tambien 
 ---
 
+Backend
+Error en el view de la api de Drinks
+
+No permitia editar ni borrar las bebidas, el problema es que habia puesto un generico de solo creacion, pero necesitavamos el crud compleot, lo cambie a RetrieveUpdateDestroyAPIView y se soluciono a la velocidad del rayo.
 Frontend
 First commit
 
