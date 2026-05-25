@@ -100,6 +100,7 @@ VITE_API_URL=
 - El frontend está desacoplado y consume la API mediante variable de entorno.
 - El sistema incluye un comando bootstrap para inicialización de datos base.
 - La autenticación es simulada (no se implementa JWT real por alcance de la prueba).
+Para el frontend se ha optado por React + Vite priorizando simplicidad y velocidad de iteración para la prueba técnica. En entorno productivo el proyecto podría migrarse fácilmente a NextJS + TypeScript si fuese necesario.
 
 ---
 
