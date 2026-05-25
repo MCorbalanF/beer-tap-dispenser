@@ -1,0 +1,67 @@
+# ═══════════════════════════════════════════════════════════════
+#  TAPFEST — docker-compose.yml
+#
+#  Servicios:
+#    backend  → Django + Gunicorn  (puerto 8000)
+#    frontend → Vite build + nginx (puerto 80)
+#
+#  Base de datos: SQLite (fichero persistido en volume)
+#
+#  Uso:
+#    docker compose up --build
+#    → Abre http://localhost
+#
+#  Dev (hot-reload frontend):
+#    docker compose --profile dev up
+# ═══════════════════════════════════════════════════════════════
+
+services:
+
+  # ── Django Backend ──────────────────────────────────────────
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    container_name: tapfest_backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DEBUG:                  ${DEBUG:-False}
+      SECRET_KEY:             ${SECRET_KEY:-change-me-in-production-please}
+      ALLOWED_HOSTS:          ${ALLOWED_HOSTS:-*}
+      CORS_ALLOW_ALL_ORIGINS: ${CORS_ALLOW_ALL_ORIGINS:-True}
+    ports:
+      - "8000:8000"
+    volumes:
+      - sqlite_data:/app/data        # SQLite persiste aquí entre reinicios
+      - static_files:/app/staticfiles
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:8000/health/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  # ── Nginx + React frontend ──────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend/beer-tap-dispenser
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:8000/api/v1
+    container_name: tapfest_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    volumes:
+      - static_files:/usr/share/nginx/html/static
+
+
+volumes:
+  sqlite_data:
+    driver: local
+  static_files:
+    driver: local

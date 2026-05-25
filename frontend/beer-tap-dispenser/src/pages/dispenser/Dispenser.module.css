@@ -1,0 +1,413 @@
+/* ── Page ── */
+.page {
+  min-height: calc(100vh - 64px);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 48px 64px;
+  animation: fadeIn 0.35s ease;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.backLink {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-text-3);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.backLink:hover { color: var(--c-amber); }
+
+.dispenserId {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--c-text-3);
+}
+
+/* ── Layout ── */
+.layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .page { padding: 24px 24px 48px; }
+  .layout { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* ── Left column ── */
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Status badge */
+.statusBadge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+.statusBadgeOpen {
+  background: var(--c-open-glow);
+  border: 1px solid rgba(74, 222, 128, 0.25);
+  color: var(--c-open);
+}
+
+.statusBadgeClosed {
+  background: rgba(107, 98, 72, 0.1);
+  border: 1px solid rgba(107, 98, 72, 0.2);
+  color: var(--c-text-3);
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.dotOpen { animation: pulse-amber 2s ease-in-out infinite; }
+
+/* Glass */
+.glassWrap {
+  width: 120px;
+  height: 180px;
+  position: relative;
+}
+
+.glass {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.1));
+}
+
+.glassFilling {
+  filter: drop-shadow(0 0 30px rgba(245, 158, 11, 0.25));
+}
+
+.bubble {
+  animation: bubble-rise 2s ease-in calc(var(--delay, 0s)) infinite;
+}
+
+.stream {
+  animation: pour 0.3s ease forwards;
+}
+
+/* Toggle button */
+.tapBtn {
+  width: 100%;
+  padding: 16px 24px;
+  border-radius: var(--r-lg);
+  border: 2px solid;
+  font-family: 'Bangers', cursive;
+  font-size: 20px;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  min-height: 58px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tapBtnClosed {
+  background: var(--c-amber);
+  border-color: var(--c-amber);
+  color: var(--c-bg);
+  box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+}
+
+.tapBtnClosed:hover:not(:disabled) {
+  background: var(--c-amber-light);
+  box-shadow: var(--shadow-amber);
+  animation: pulse-amber 1.5s ease-in-out infinite;
+}
+
+.tapBtnOpen {
+  background: transparent;
+  border-color: #f87171;
+  color: #f87171;
+}
+
+.tapBtnOpen:hover:not(:disabled) {
+  background: rgba(248, 113, 113, 0.08);
+}
+
+.tapBtnLoading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.tapBtn:disabled:not(.tapBtnLoading) {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btnIcon { font-size: 14px; }
+.btnLabel { }
+
+.btnSpinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+  opacity: 0.7;
+}
+
+.noDrinkWarning {
+  font-size: 12px;
+  color: #f87171;
+  text-align: center;
+  opacity: 0.7;
+}
+
+/* ── Right column ── */
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Name block */
+.nameBlock { }
+
+.dispenserName {
+  font-family: 'Bangers', cursive;
+  font-size: 58px;
+  text-transform: capitalize;
+
+  letter-spacing: 0.04em;
+  color: var(--c-text);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.drinkLabel {
+  font-size: 16px;
+  text-transform: capitalize;
+
+  color: var(--c-amber);
+  font-weight: 500;
+}
+
+/* Price block */
+.priceBlock {
+  background: var(--c-bg-3);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  padding: 24px 28px;
+}
+
+.priceLabel {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-text-3);
+  margin-bottom: 8px;
+}
+
+.priceDisplay {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.priceActive .priceValue {
+  animation: tick-up 0.1s ease;
+}
+
+.priceCurrency {
+  font-family: 'Bangers', cursive;
+  font-size: 36px;
+  color: var(--c-amber-dark);
+}
+
+.priceValue {
+  font-family: 'DM Mono', monospace;
+  font-size: 56px;
+  font-weight: 500;
+  color: var(--c-amber);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 40px rgba(245, 158, 11, 0.3);
+}
+
+.priceNote {
+  font-size: 11px;
+  color: var(--c-text-3);
+  margin-top: 8px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.06em;
+}
+
+/* Closed celebration card */
+.closedCard {
+  background: rgba(74, 222, 128, 0.06);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  border-radius: var(--r-lg);
+  padding: 20px 24px;
+  animation: celebration 0.5s ease;
+}
+
+.closedTitle {
+  font-family: 'Bangers', cursive;
+  font-size: 20px;
+  letter-spacing: 0.06em;
+  color: var(--c-open);
+  margin-bottom: 16px;
+}
+
+.closedStats {
+  display: flex;
+  gap: 24px;
+}
+
+.closedStat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.closedStatValue {
+  font-family: 'DM Mono', monospace;
+  font-size: 18px;
+  color: var(--c-text);
+  font-weight: 500;
+}
+
+.closedStatLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--c-text-3);
+}
+
+/* Info grid */
+.infoGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.06);
+  gap: 16px;
+}
+
+.infoRow:last-child { border-bottom: none; }
+
+.infoSeparator {
+  height: 1px;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.infoLabel {
+  font-size: 12px;
+  color: var(--c-text-3);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.infoValue {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--c-text-2);
+  text-align: right;
+}
+
+.infoValueMuted {
+  color: var(--c-text-3);
+  font-style: italic;
+}
+
+/* Status note */
+.statusNote {
+  font-size: 13px;
+  color: var(--c-text-3);
+}
+
+.textOpen   { color: var(--c-open); }
+.textClosed { color: var(--c-text-3); }
+
+/* ── Loading / Error states ── */
+.loadingPage,
+.errorPage {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 40px 20px;
+}
+
+.loadingSpinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(245, 158, 11, 0.2);
+  border-top-color: var(--c-amber);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.loadingText {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--c-text-3);
+  text-transform: uppercase;
+}
+
+.errorText {
+  color: #f87171;
+  font-size: 16px;
+}
+
+.retryBtn {
+  background: none;
+  border: 1px solid rgba(248,113,113,0.3);
+  color: #f87171;
+  padding: 8px 24px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.retryBtn:hover { background: rgba(248,113,113,0.08); }

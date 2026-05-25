@@ -1,30 +1,27 @@
-FROM python:3.11-slim
+# ─────────────────────────────────────────────
+#  TAPFEST — Backend Dockerfile
+#  Django 6 + Gunicorn, Python 3.12-slim, SQLite
+# ─────────────────────────────────────────────
 
-# Evita .pyc y logs raros
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+FROM python:3.12-slim AS base
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      curl \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Dependencias del sistema (opcional pero recomendable)
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+# Dependencias Python
+COPY django/requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar requirements primero (cache Docker)
-COPY requirements.txt /app/
+# Código fuente
+COPY django/ .
 
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# Carpeta para el fichero SQLite (montada como volume)
+RUN mkdir -p /app/data
 
-# Copiar todo el proyecto
-COPY . /app/
 
-# Exponer Django
 EXPOSE 8000
 
-# Script de arranque
-CMD ["bash", "-c", "\
-python manage.py makemigrations && \
-python manage.py migrate && \
-python manage.py bootstrap && \
-python manage.py runserver 0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
