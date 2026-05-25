@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import s from './usage_history.module.css'
+import { useAuth } from '../../../contexts/AuthContext'
 
 export default function UsageHistory({ usages = [] }) {
-
+  const {isAdmin} = useAuth()
+  if (!isAdmin) return null
+  
   const [historyOpen, setHistoryOpen] = useState(false)
   const [openId, setOpenId] = useState(null)
 

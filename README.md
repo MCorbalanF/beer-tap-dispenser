@@ -251,7 +251,13 @@ añadimos un boton para mostrar las metricas avanzadas que hemos colocado.
 podriamos colocar todo esto tipado para que solo el admin pueda ver las metricas y historial, tanto a back como por end, pero por razones de simplicidad, lo he reducido a este uso, ya que asi se puede ver siempre el mismo endpoint pero por timeconstrainments y demas, he decidido no realiar esto, a futuro podria crearle facilmente, solamente añadiendo el authcontext y escondiendo los datos si esta el admin registrado, y por parte del backend se puede ocultar estos campos si no estan y ya esta. no hay que modificar mucha cosa, asi que es sencillo y escalable a futuro.
 
 ---
+##### frontend
+#### Lectura antesd de la presentación
 
+Segun el anunciado, solo los admin pueden ver el flow y las estadisticas, asi que he realizado los cambios de estructura para ocultar los datos a usuairos publicos en el front, ahora ire con la ocultacion en el back para no mostrar datos sensibles.
+
+
+---
 
 #### errores encontrados:
 por alguna razon el branch frontend no se ha subido a github, pero he podido mergearlo y recuperar datos de frontend.

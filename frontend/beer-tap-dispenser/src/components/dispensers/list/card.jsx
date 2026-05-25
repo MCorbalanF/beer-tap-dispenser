@@ -1,3 +1,4 @@
+import { useAuth } from '../../../contexts/AuthContext';
 import s from '../../../pages/dispensers/DispensersList.module.css'
 
 function StatusDot({ isOpen }) {
@@ -8,7 +9,7 @@ function StatusDot({ isOpen }) {
 
 function DispenserCard({ dispenser, onClick }) {
   const { name, drink, is_open, flow_volume } = dispenser
-
+  const { isAdmin } = useAuth()
   return (
     <button className={`${s.card} ${is_open ? s.cardOpen : ''}`} onClick={onClick}>
       {/* Glow effect when open */}
@@ -62,12 +63,13 @@ function DispenserCard({ dispenser, onClick }) {
         </div>
       )}
 
-      {/* Flow rate */}
-      <div className={s.flowRow}>
-        <span className={s.flowLabel}>Flow rate</span>
-        <span className={s.flowValue}>{flow_volume} L/s</span>
-      </div>
-
+      {/* Flow rate */
+        isAdmin &&
+        <div className={s.flowRow}>
+          <span className={s.flowLabel}>Flow rate</span>
+          <span className={s.flowValue}>{flow_volume} L/s</span>
+        </div>
+      }
       {/* CTA */}
       <div className={s.cta}>
         {is_open ? 'See live →' : 'Open tap →'}

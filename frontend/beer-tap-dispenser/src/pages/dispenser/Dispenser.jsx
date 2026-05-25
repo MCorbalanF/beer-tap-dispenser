@@ -5,9 +5,11 @@ import s from './Dispenser.module.css'
 import BeerGlass from '../../components/dispensers/details/beer_glass'
 import LivePrice from '../../components/dispensers/details/live_price'
 import UsageHistory from '../../components/dispensers/details/usage_history'
+import { useAuth } from '../../contexts/AuthContext'
 
 export default function DispenserPage() {
   const { id } = useParams()
+  const { isAdmin } = useAuth()
 
   const [dispenser, setDispenser] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -221,12 +223,15 @@ export default function DispenserPage() {
           <div className={s.infoGrid}>
             <InfoRow label="Drink" value={drink?.name || '—'} />
             <InfoRow label="Price / liter" value={drink ? `${drink.price_per_liter}€` : '—'} />
-            <InfoRow label="Flow rate" value={`${flowVolume} L/s`} />
+           {isAdmin && (
+              <InfoRow label="Flow rate" value={`${flowVolume} L/s`} />
+            )}
             {drink?.description && (
               <InfoRow label="Description" value={drink.description} />
             )}
 
-            {/* Future metrics — placeholders ready */}
+            {/* Future metrics — placeholders ready */
+            isAdmin &&<>
             <div className={s.infoSeparator} />
             <InfoRow
               label="Total sessions"
@@ -243,7 +248,8 @@ export default function DispenserPage() {
               value={totalRevenue != null ? `${parseFloat(totalRevenue).toFixed(2)}€` : '—'}
               muted={totalRevenue == null}
             />
-            {showMoreMetrics && <>
+            </>}
+            {isAdmin && showMoreMetrics && <>
               <InfoRow
                 label="Average Liters per session"
                 value={averageLitersPerSessions != null ? `${parseFloat(averageLitersPerSessions).toFixed(1)}L` : '—'}
@@ -274,11 +280,12 @@ export default function DispenserPage() {
             }
 
           </div>
-                      <div className={s.showMoreWrapper}>
+            {isAdmin &&
+            <div className={s.showMoreWrapper}>
               <button className={s.showMoreBtn} onClick={() => setShowMoreMetrics(!showMoreMetrics)}>
                {!showMoreMetrics ? 'Showing all metrics' : 'Hide metrics'}
               </button>
-            </div>
+            </div>}
           <UsageHistory usages={dispenser?.usages || []} />
         </div>
       </div>
