@@ -166,36 +166,10 @@ Backend
 Error en el view de la api de Drinks
 
 No permitia editar ni borrar las bebidas, el problema es que habia puesto un generico de solo creacion, pero necesitavamos el crud compleot, lo cambie a RetrieveUpdateDestroyAPIView y se soluciono a la velocidad del rayo.
-Frontend
-First commit
-
-se le ha pedido a claude code, que realize las tareas basicas para crear un front end como base, estas practicas ha sido, tener un statemachine para el auth, especificarle el auth y como funciona y aun asi ha fallado como una escopeta de feria, asi que iremos limpiando detras del desastre que ha creado. De esta manera, nos ha echo la logica dura que podria durar casi 5 dias en hacer a mano, y hay que simplemente hay que crear de 0, hay cosas que se deberia ver poner a futuro, la logica esta en puro css cargado, se podria hacer con un framework de css como bootstrap y cambiarlo para tener estilos mas fijos y no tanta variabilidad y escalable podria ser mucho mas escalable  nivel codigo, revisar cada css para cada pagina puede ser un dolo, pero al ser un proyecto pequeño que no crecera mucho mas, en fin asi se queda.
-hay errores visuales, inconsistencias varias con las fuentes y otros requisitos que iremos puliendo a traves de los siguientes commits
----
-Frontend
-Desacoplar componentes y logica de paginas:
-
-se han desacoplado los componenes que estaban en las paginas para tener descentralizado toda la logica, tener escalabilidad a nivel front y facilidad de lectura.
-se ha arreglado el beer_glass ya que estaba invertido, con cambiar el path y el trazado de svg ha sido suficiente.
-no se tocara ni se pensara en localizacion al ser un trabajo a tan baja escala, pero ahora seria el momento de plantearlo ya que hay pocas palabras hardcodeadas aun.
-
-
-hay un error en la api de patch solo! el administrador no deja editar una bebida ni tampoco eliminarla!
-por lo tanto ahora vamos a cambiar y arreglar el back
 ---
 
-Main
-Dockerizacion
+Backend pequeños ajustes:
 
-acabar la dockerizacion del proyecto lo pongo en main por que afecta a los dos, pero se deberia crear un branch que se llamase devops o demas y despues mergearlo sobretodo en ambiente produccion
-
-Dockerizacion de la app:
-
-ha sido un dolor de cabeza el frontend, nunca habia trabajado con vite y tiene dependencias extrañas para tirar y no hay ningun tutorial para tirarlo desde Docker, pero ya esta:
-por que daba problemas? muy sencillo, intentaba asegurar las instalaciones de ataques instalando pnpm y tirandolo todo desde pnpm, el problema es que no hacia nada, he estado unas 4 1/2 horas intentandolo pero imposible, me supera, por lo tanto he optado al tener un scoope mucho mas pequeño i aislado en un docker, voy a usar npm i ya esta.
----
-
-
-Dockerignore
-
-añadi dockerignore por que copia la base de datos i migraciones que hay de 0 y no mantiene lo que hay en el docker, entonces hay que ignorar todo el contenido que se tenga en local por si se han echo pruebas o por is se han subido archivos sin querer!
+se ha añadido un serializador para los views de listado, no necesitamos tanta informacion como con detail, optimizamos las peticiones cuando haya varias, a futuro puede ser beneficioso.
+tambien añadimos metricas y historial de usos en los detalles de dispensador, de todo tipo, los colocamos en el modelo para optimizar, y si queremos reutilizar sera muchisimo mas sencillo, los serializadores deberian ser sencillos
+edicion del comando bootstrap para iniciar el servicio, ahora los flows de las bebidas son mas bajos, un flow de medio litro cada segundo no es natural.

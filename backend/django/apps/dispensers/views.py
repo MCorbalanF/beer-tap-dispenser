@@ -10,6 +10,7 @@ from apps.dispensers.models import (
 
 from apps.dispensers.serializers import (
     DispenserDetailSerializer,
+    DispenserCardSerializer,
     DispenserCreateUpdateSerializer,
     DispenserUsageSerializer
 )
@@ -22,7 +23,7 @@ from apps.dispensers.services import DispenserService
 #views publicos
 class DispenserListView(generics.ListAPIView):
     queryset = Dispenser.objects.all()
-    serializer_class = DispenserDetailSerializer
+    serializer_class = DispenserCardSerializer
 
 class DispenserDetailView(generics.RetrieveAPIView):
     queryset = Dispenser.objects.all()
