@@ -84,14 +84,14 @@ export default function DispenserPage() {
   const isOpen = dispenser?.is_open || false
   const flowVolume = dispenser?.flow_volume || 0.5
   const openedAt = dispenser?.current_usage_opened_at || null  // ready for future backend field
-  const totalUsages = dispenser?.metrics.total_sessions || null           // ready for future backend field
-  const totalLiters = dispenser?.metrics.total_liters || null           // ready for future backend field
-  const totalRevenue = dispenser?.metrics.total_revenue || null           // ready for future backend field
-  const averageLitersPerSessions = dispenser?.metrics.average_liters_per_session || null           // ready for future backend field
-  const averageRevenuePerSessions = dispenser?.metrics.average_revenue_per_session || null           // ready for future backend field
-  const longestSession = dispenser?.metrics.longest_session || null           // ready for future backend field
-  const shortestSession = dispenser?.metrics.shortest_session || null           // ready for future backend field
-  const averagePricePerLiter = dispenser?.metrics.average_price_per_liter || null           // ready for future backend field
+  const totalUsages = dispenser?.metrics?.total_sessions || null           // ready for future backend field
+  const totalLiters = dispenser?.metrics?.total_liters || null           // ready for future backend field
+  const totalRevenue = dispenser?.metrics?.total_revenue || null           // ready for future backend field
+  const averageLitersPerSessions = dispenser?.metrics?.average_liters_per_session || null           // ready for future backend field
+  const averageRevenuePerSessions = dispenser?.metrics?.average_revenue_per_session || null           // ready for future backend field
+  const longestSession = dispenser?.metrics?.longest_session || null           // ready for future backend field
+  const shortestSession = dispenser?.metrics?.shortest_session || null           // ready for future backend field
+  const averagePricePerLiter = dispenser?.metrics?.average_price_per_liter || null           // ready for future backend field
 
   if (loading) {
     return (

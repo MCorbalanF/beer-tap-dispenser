@@ -17,14 +17,30 @@ class DispenserCardSerializer(serializers.ModelSerializer):
 class DispenserDetailSerializer(serializers.ModelSerializer):
     drink = DrinkSerializer(read_only=True)
     usages = serializers.SerializerMethodField()
-    metrics = serializers.ReadOnlyField()
+    metrics = serializers.SerializerMethodField()
+
     class Meta:
         model = Dispenser
         fields = "__all__"
-    
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        request = self.context.get("request")
+        admin = getattr(request, "is_mock_admin", None)
+        print(f"Admin in context: {admin} {type(admin)}", flush=True)
+        # ❌ sin auth → ocultar campos sensibles
+        if not admin:
+            print("No admin in context, hiding metrics and usages", flush=True)
+            self.fields.pop("metrics", None)
+            self.fields.pop("usages", None)
+
     def get_usages(self, obj):
-        usages =obj.usages.filter(dispenser=obj).order_by('-created_at')  # Get last 5 usages
+        usages = obj.usages.order_by('-created_at')
         return DispenserUsageSerializer(usages, many=True).data
+
+    def get_metrics(self, obj):
+        return obj.metrics
 
 
 class DispenserCreateUpdateSerializer(serializers.ModelSerializer):

@@ -2,7 +2,7 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from apps.accounts.permissions import IsMockAdmin
+from apps.accounts.permissions import IsMockAdmin, PublicIsMockAdmin
 
 from apps.dispensers.models import (
     Dispenser
@@ -28,7 +28,7 @@ class DispenserListView(generics.ListAPIView):
 class DispenserDetailView(generics.RetrieveAPIView):
     queryset = Dispenser.objects.all()
     serializer_class = DispenserDetailSerializer
-    
+    permission_classes = [PublicIsMockAdmin]
 
 class DispenserToggleView(APIView):
     def post(self, request, pk):
