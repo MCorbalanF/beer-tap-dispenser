@@ -1,13 +1,33 @@
-##Iniciar proyecto en docker:
+# 🍻 Beer Tap Dispenser
+By: Marc Corbalan Font
+email: mcorbalanfont@gmail.com
 
-Produccion:
+Total horas:
+32h
+
+Lenguajes utilizados:
+JS + Python
+
+Stack Tecnologico:
+- Django
+- SQLite
+- DRF 
+- React Vite
+- Docker
+
+## Iniciar proyecto en docker:
+
+##### Produccion:
+
 iniciar docker desktop
 abrir powershell/cmd 
 asegurarse que tienes docker instalado: docker version
 ir a la carpeta del proyecto raiz, donde esta el docker-compose.yml
 
+``
 docker compose  build --no-cache
 docker compose up --build
+``
 
 admin credentials:
 admin@festival.com 
@@ -16,7 +36,7 @@ admin123
 abrir dockerfile y abrir el proyecto en el puerto correspondiente
 
 
-Development:
+##### Development:
 crear venv local con las variables siguientes:
 
 .env con sus variables necesarias en el back
@@ -30,31 +50,38 @@ VITE_API_URL
 
 iniciar server development comandos:
 backend:
+``
 venv\scripts\activate
 python manage.py makemigrations
 python manage.py migrate
 python manage.py bootstrap
 python manage.py runserver
-
+``
 frontend:
+``
 npm vite
-
+``
 commit history 
 He optado por crear 2 branches en el repositorio, backend y frontend, subir i mergeas a partir de alli, cada stack del proyecto, al estar yo solo lo mergeo directamente al branch principal y no creo pequeños branches para cada funcion, por que no importa, pero esta aproximacion me permite crecer si alguien se uniese al proyecto por alguna razón.
 
 tambien la estructura de las apps, he decidido dejarlas simple como un solo archivo .py por cada capa,para tener mas legibilidad y menos capas en un proyecto simple, moverlo es un trabajo pequeño y facil si se quisiera escalar.
 
+
+
+
+## Commit history comments:
+
 -------------------------------------------------------------
-First commit:
+#### First commit:
 Asegurar la base tecnologica del proyecto, arquitectura monolitica modular. Monorepo
 React Vite + Django DRF
 
 
 Backend:
-Django
-DRF
-Docker
-SQLite
+- Django
+- DRF
+- Docker
+- SQLite
 
 he elegido sql lite como bd el volumen es pequeño en esta prueba, django lo soporta de forma nativa, minimizar la complejidad, rapidez de desarrollo.
 En entorno productivo deberiamos elegir postgresql por las capacidades avanzadas, rendimiento y extensiones.
@@ -69,10 +96,10 @@ drinks: contendra el contenido de los propios dispensadores, pudiendo escalar a 
 
 
 Frontend:
-React
-Vite
-React router DOM
-Docker
+- React
+- Vite
+- React router DOM
+- Docker
 
 Porque vite?
 velocidad, simplicidad de configuracion, compilacion rapida...
@@ -80,19 +107,21 @@ velocidad, simplicidad de configuracion, compilacion rapida...
 Consideraciones:
 React permiten una instalación con herramientas experimentales orientadas a la optimizacion de los estados de react, 
 he optado por no utilizar esta funcion experimental por una version mas estable de la misma. sin caracteristicas experimentales se mantiene cohesion, mantenibilidad y previsibilidad.
+
 ---
 
 
 
 
-Backend
-Empezaremos por el backend:
+##### Backend
+#### Empezaremos por el backend:
 primero hay que establecer una base para todo lo que vendremos a hacer, instalar el corsheader para que react no tenga problemas al hacer fetch con nosotros, seguidamente, tenemos que acabar de configurar todas las apps y aplicar nombres y buenas practicas en los settings de django.
 crear y asegurar que django rest framework funciona con el endpoint health, asegurandome que el flow del framework es correcto y para futuras consultas, y un endpoint de aservicio para controlar el versionado de la api en la que se esta trabajando.
+
 ---
 
-Backend
-Estructurar la base de datos:
+##### Backend
+#### Estructurar la base de datos:
 vamos a establecer los modelos para nuestro backend. 
 vamos a separar responsabilidades por funcionalidades, podemos entender lo siguiente:
 un dispensador contiene bebida, y el dispensador tiene unos usos (metricas)
@@ -109,8 +138,8 @@ para los dispensadores creo una clase abstracta para evitar duplicaciones de cam
 corroboro tambien que las migraciones con makemigrations i migrate funcionan correctamente y no rompen nada.
 ---
 
-Backend
-Validacion de datos i serialización.
+##### Backend
+#### Validacion de datos i serialización.
 
 vale en este caso, necesitamos validar los casos que usaremos:
 - ver/editar/crear/borrar una nueva bebida
@@ -125,10 +154,11 @@ el serializador de bebidas, es lo mas simple posible ya que no tiene datos compl
 los dispensadores tienen mas complejidad al tener relacionales, por eso lo hemos separado en detalles, create/update, i la logica mecanica del grifo. de esta manera separamos responsabilidades con los efectos activos y mucho mas controlado, este punto puede irse rapidamente de madre si no se toma una decision, asi qeu aqui los genericos para los views tambien quedan en algunos puntos descartados!
 
 adicionalmente se han añadido las validaciones basicas para precio i flow para que nunca este en negativo
+
 ---
 
-Backend
-Views i logica dura:
+##### Backend
+#### Views i logica dura:
 
 primero, antes de nada he cambiado el nombre de la app login, a un nombre mas adiente como es accounts, ya que esta app lo que hara es manejar el flow de authentificacion hardcodeada como pide el anunciado.
 Para ello, he echo un flujo con un servicio y un endpoint que recibe un email y password para devolver un token que deberia ser utilizado luego en los endpoints con proteccion para poder crear i editar las bebidas y dispensadores de la base de datos.
@@ -138,10 +168,10 @@ añadir todos los views de drinks es facil ya que al ser un modelo sencillo pode
 
 adicionalmente añado otros servicios que hay que externalizar de los views, los surtidores necesitamos un crud de creacion y edicion para poder editar i crear los surtidores con sus cervezas.
 necesitamos los siguientes endpoints:
--listado publico de surtidores
--details de 1 surtidor
--toggle de funcion del surtidor
--creacion edicion del surtidor
+- listado publico de surtidores
+- details de 1 surtidor
+- toggle de funcion del surtidor
+- creacion edicion del surtidor
 
 para el endpoint de la logica de surtidor he elegido hacerlo en un solo endpoint, debido a que la logica que hay detras es muy simple, simplemente se enciende o se paga, si se enciende hace X i si se apaga hace Y.
 eso simplifica muchisimo la logica, si tubieramos que tubiera mas acciones, deberiamos hacer un diccionario con todas las posibilidades que tenga el surtidor y crear una especie de state machine que ejecute esos estados y se mueva entre ellos.pero seria escalable con este mismo endpoint, simplemente habrai que ponerle una query que acepte.
@@ -151,10 +181,11 @@ se podria mejorar creando llaves de idempotentes para que si dos usuarios llegan
 
 he visto una inconsistencia con el modelo del dispensador, un float es demasiado impreciso y no necesitamos de tanta información, por lo tanto, lo he pasado a decimalfield para tener mas control, y que ocupe menos en base de datos, mas precision y mas estructurado!
 antes de hacer el commit he decidido mirarme bien la logica pra refactorizar algunos views. pero lo hare en el proximo commit.
+
 ---
 
-Backend
-logica refactorizacion
+##### Backend
+#### logica refactorizacion
 
 la logica tenia algunos fallos, el modelo tenia algunos errores y se han modificado y probado.
 se ha pasado la logica mas dura al servicio y se ha echo mas escalable, de esta manera no tenemos magic strings en el view, toda la logica se externaliza y se hace mas escalable.
@@ -166,17 +197,20 @@ añade cervezas y sus respectivo surtidor por cada cerveza
 no me acaba de gustar del todo como esta echa la logica del toggle pero debemos movernos al front para avanzar el proyecto
 el proximo paso para el backend sera realizar pruebas y crear los test correspondientes
 añadido .gitignore otra vez por que se habia eliminado por alguna razon que no entiendo
+
 ---
 
-Backend
-Consistencia de estado y concurrencia de datos del endpointt DispenserToggle:
+##### Backend
+#### Consistencia de estado y concurrencia de datos del endpointt DispenserToggle:
 
 se ha colocado un timeout de 1s para evitar spam de abrir y cerar el grifo, se ha añadido una condicional para registrar si ha pasado ese tiempo, en caso de que no haya pasado el cooldown, simplemente devuelve el antiguo estado en que estaba para evitar cosas raras en el front.
 A la vez he estado pensando enla concurrencia de los datos, que ocurre si hay mas de un usuario clicando, elegi un unico endpoint para simplificar el flujo i complejidad entre front y back, pero con esto no lo creamos con idempotencia, pero para mvp es suficiente. lo cambiaria a 
+
 ---
 
 
-Backend Testing:
+##### Backend
+#### Backend Testing:
 
 he creado varios test para comprobar que el funcionamiento y de los endpoints basicos funcionan, me he ayudado de ia por que es uno de mis puntos flojos, pero me ha permitido ver que habia varios campos que no estaban adecuadamente tipados como float en vez de decimal mas, esta vez en los dispensadores, por lo que hacia romper los tests. tambien otros cambios semanticos que son mas correctos. 
 He decidido cambiar estos campos a tipados mejores para asegurar un mejor tipado, aun que haya costado mas hacer algunos calculos con diferentes tipados, es mas escalable y evitamos que los datos puedan confundirse, poudiendo escalar a largo plazo si queremos hacer algun cambio.
@@ -184,23 +218,42 @@ Los test pasan, el ultimo paso de back es acabar de poner campos o valores en lo
 
 primer esbozo de la dockerizacion, hay que retocarlo cuando se conecte el frontend y tenga su docker entonces crearemos un docker-compose para poder tirar front y back a la vez y se puedan comunicar entre ellos, lo haremos asi para facilitar la conexion con localhost y poder desplegarlo en local todo, para produccion deberia cambiarse los fetchs y aislar completamente el front del back, 0 conexiones y hacerlas a traves de la url que tengamos en nuestro dns.
 s ha eliminado tambien 
+
+---
+##### Frontend
+#### Commit inicial frontend
+
+se ha perdido el commit inicial por el merge, pero lo resumo, se ha creado una base de frontend con IA (claude code) para acelerar el proceso, se le ha indicado que queria un state machine para la auth, un contexto y el flujo exacto de react router dom,  ademas, se ha desacoplado los componentes hardcodeados en las paginas para tener mejor lectura. Y otros pequeños ajustes.
+
 ---
 
-Backend
-Error en el view de la api de Drinks
+##### Backend
+#### Error en el view de la api de Drinks
 
 No permitia editar ni borrar las bebidas, el problema es que habia puesto un generico de solo creacion, pero necesitavamos el crud compleot, lo cambie a RetrieveUpdateDestroyAPIView y se soluciono a la velocidad del rayo.
+
 ---
 
-Backend pequeños ajustes:
+##### Backend
+#### Backend pequeños ajustes:
 
 se ha añadido un serializador para los views de listado, no necesitamos tanta informacion como con detail, optimizamos las peticiones cuando haya varias, a futuro puede ser beneficioso.
 tambien añadimos metricas y historial de usos en los detalles de dispensador, de todo tipo, los colocamos en el modelo para optimizar, y si queremos reutilizar sera muchisimo mas sencillo, los serializadores deberian ser sencillos
 edicion del comando bootstrap para iniciar el servicio, ahora los flows de las bebidas son mas bajos, un flow de medio litro cada segundo no es natural.
-----
 
-Ajustes finales de frontend
+---
+
+##### frontend
+#### Ajustes finales de frontend
 
 Añadimos y perfilamos los datos que hemos creado del backend, metricas, separamos la logica en la carpeta componentes y un css personalizado ya que es muy grande,
 añadimos un boton para mostrar las metricas avanzadas que hemos colocado.
 podriamos colocar todo esto tipado para que solo el admin pueda ver las metricas y historial, tanto a back como por end, pero por razones de simplicidad, lo he reducido a este uso, ya que asi se puede ver siempre el mismo endpoint pero por timeconstrainments y demas, he decidido no realiar esto, a futuro podria crearle facilmente, solamente añadiendo el authcontext y escondiendo los datos si esta el admin registrado, y por parte del backend se puede ocultar estos campos si no estan y ya esta. no hay que modificar mucha cosa, asi que es sencillo y escalable a futuro.
+
+---
+
+
+#### errores encontrados:
+por alguna razon el branch frontend no se ha subido a github, pero he podido mergearlo y recuperar datos de frontend.
+
+.gitignore se ha ido perdiondo datos dependiendo de la rama en la que estaba.
