@@ -7,23 +7,26 @@ from apps.drinks.models import Drink
 
 
 
-class DispenserDetailSerializer(serializers.ModelSerializer):
+class DispenserCardSerializer(serializers.ModelSerializer):
     drink = DrinkSerializer(read_only=True)
-    '''    
-    usages = serializers.SerializerMethodField()
-
-    def get_usages(self, obj):
-        usages = obj.usages.order_by('-created_at')[:5]  # Get last 5 usages
-        return DispenserUsageSerializer(usages, many=True).data
-    '''
     class Meta:
         model = Dispenser
         fields = "__all__"
 
+
+class DispenserDetailSerializer(serializers.ModelSerializer):
+    drink = DrinkSerializer(read_only=True)
+    usages = serializers.SerializerMethodField()
+    metrics = serializers.ReadOnlyField()
+    class Meta:
+        model = Dispenser
+        fields = "__all__"
     
-    
-    
-    
+    def get_usages(self, obj):
+        usages =obj.usages.filter(dispenser=obj).order_by('-created_at')  # Get last 5 usages
+        return DispenserUsageSerializer(usages, many=True).data
+
+
 class DispenserCreateUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:

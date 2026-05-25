@@ -6,15 +6,15 @@ from apps.dispensers.models import Dispenser
 
 
 BEVERAGE_SEED = {
-    "estrella damm": {"price": 2.50, "flow": 0.50},
-    "voll-damm": {"price": 3.00, "flow": 0.65},
-    "heineken": {"price": 2.80, "flow": 0.55},
-    "cruzcampo": {"price": 2.20, "flow": 0.45},
-    "estrella galicia": {"price": 2.60, "flow": 0.52},
-    "alhambra": {"price": 2.70, "flow": 0.58},
-    "coronita": {"price": 3.20, "flow": 0.60},
-    "mahou": {"price": 2.40, "flow": 0.50},
-    "san miguel": {"price": 2.30, "flow": 0.48},
+    "estrella damm": {"price": 2.50, "flow": 0.05},
+    "voll-damm": {"price": 3.00, "flow": 0.06},
+    "heineken": {"price": 2.80, "flow": 0.05},
+    "cruzcampo": {"price": 2.20, "flow": 0.04},
+    "estrella galicia": {"price": 2.60, "flow": 0.05},
+    "alhambra": {"price": 2.70, "flow": 0.06},
+    "coronita": {"price": 3.20, "flow": 0.06},
+    "mahou": {"price": 2.40, "flow": 0.05},
+    "san miguel": {"price": 2.30, "flow": 0.05},
 }
 
 

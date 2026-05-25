@@ -140,3 +140,10 @@ Backend
 Error en el view de la api de Drinks
 
 No permitia editar ni borrar las bebidas, el problema es que habia puesto un generico de solo creacion, pero necesitavamos el crud compleot, lo cambie a RetrieveUpdateDestroyAPIView y se soluciono a la velocidad del rayo.
+---
+
+Backend pequeños ajustes:
+
+se ha añadido un serializador para los views de listado, no necesitamos tanta informacion como con detail, optimizamos las peticiones cuando haya varias, a futuro puede ser beneficioso.
+tambien añadimos metricas y historial de usos en los detalles de dispensador, de todo tipo, los colocamos en el modelo para optimizar, y si queremos reutilizar sera muchisimo mas sencillo, los serializadores deberian ser sencillos
+edicion del comando bootstrap para iniciar el servicio, ahora los flows de las bebidas son mas bajos, un flow de medio litro cada segundo no es natural.

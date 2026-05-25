@@ -4,6 +4,19 @@ from apps.drinks.models import Drink
 from django.utils import timezone
 from decimal import Decimal
 
+from django.db.models import (
+    Sum,
+    Count,
+    Avg,
+    Max,
+    Min,
+    Q,
+    F,
+    ExpressionWrapper,
+    DurationField
+)
+from django.db.models.functions import Coalesce
+
 
 class TimeStampedModel(models.Model):
 
@@ -27,7 +40,61 @@ class Dispenser(TimeStampedModel):
     
     def __str__(self):
         return self.name
+    
+    @property
+    def metrics(self):
 
+        usages = self.usages.all()
+
+        completed_usages = usages.filter(
+            closed_at__isnull=False
+        )
+
+        metrics = completed_usages.aggregate(
+
+            total_sessions=Count("id"),
+
+            total_revenue=Coalesce(
+                Sum("total_price"),
+                Decimal("0")
+            ),
+
+            total_liters=Coalesce(
+                Sum("liters_served"),
+                Decimal("0")
+            ),
+
+            average_liters_per_session=Coalesce(
+                Avg("liters_served"),
+                Decimal("0")
+            ),
+
+            average_revenue_per_session=Coalesce(
+                Avg("total_price"),
+                Decimal("0")
+            ),
+
+            longest_session=Max("duration_seconds"),
+
+            shortest_session=Min("duration_seconds")
+        )
+
+        metrics["active_session"] = usages.filter(
+            closed_at__isnull=True
+        ).exists()
+
+        if metrics["total_liters"]:
+
+            metrics["average_price_per_liter"] = (
+                metrics["total_revenue"]
+                / metrics["total_liters"]
+            )
+
+        else:
+
+            metrics["average_price_per_liter"] = Decimal("0")
+
+        return metrics
 
 class DispenserUsage(TimeStampedModel):
     dispenser = models.ForeignKey(Dispenser, on_delete=models.CASCADE, related_name='usages')
